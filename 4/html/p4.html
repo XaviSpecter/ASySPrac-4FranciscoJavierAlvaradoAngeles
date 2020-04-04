@@ -1,0 +1,374 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Practica 4. Convoluci&oacute;n y correlaci&oacute;n de se&ntilde;ales.</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-04-03"><meta name="DC.source" content="p4.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Practica 4. Convoluci&oacute;n y correlaci&oacute;n de se&ntilde;ales.</h1><!--introduction--><p>Autor. Alvarado Angeles Francisxo Javier</p><p>Grupo. 2MV1</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Objetivos.</a></li><li><a href="#2">Introducci&oacute;n.</a></li><li><a href="#4">Desarrollo</a></li><li><a href="#5">Problema 1</a></li><li><a href="#7">Problema 2</a></li><li><a href="#9">Problema 3</a></li><li><a href="#11">Problema 4.</a></li><li><a href="#13">Problema 5</a></li></ul></div><h2 id="1">Objetivos.</h2><div><ul><li>Conocer m&eacute;todos b&aacute;sicos de integraci&oacute;n num&eacute;rica.</li><li>Manipulaci&oacute;n de instrucciones en MATLAB.</li><li>Simular convoluciones y correlaciones de se&ntilde;ales continuas.</li><li>Simular convoluciones y correlaciones de se&ntilde;ales discretas.</li></ul></div><h2 id="2">Introducci&oacute;n.</h2><p><b>Formulas cerrada de Newton-Cotes</b></p><p>Las  formulas  cerradas  de  Newton-Cotes nos dicen que si t&uacute; tienes una funci&oacute;n <img src="p4_eq17663307419741296505.png" alt="$f(x)$"> que es derivable un n&uacute;mero determinado de veces, y la derivada es continua, entonces en lugar de hacer la integral de <img src="p4_eq17663307419741296505.png" alt="$f(x)$"> t&uacute; puedes aplicar la integral a la expresi&oacute;n del lado derecho la cual es un polinomio m&aacute;s la suma de un error la cual sera una aproximaci&oacute;n (ya que tiene un cierto error) de la integral de tu funci&oacute;n original <img src="p4_eq17663307419741296505.png" alt="$f(x)$"></p><p><img src="p4_eq04561738107850743513.png" alt="$$f(x)=p(x)+\frac{f^{n+1}\xi(\omega)}{(n+1)!}(x-x_0)(x-x_1)...(x-x_n)$$"></p><p><img vspace="5" hspace="5" src="imagen 01.png" alt=""> </p><p>Estas formulas de Newton-Cotes se llaman formula cerrada de <img src="p4_eq05406661583729012045.png" alt="$(n+ 1)$"> puntos donde n representa el grado del polinomio que se quiere usar para hacer la aproximaci&oacute;n, adem&aacute;s de que tambi&eacute;n representa la cantidad de puntos que se necesitan para tener el grado de dicho polinomio.</p><p><img src="p4_eq12505361995032180219.png" alt="$$x_0=a$$ $$x_n=b.$$ $$h=\frac{b-a}{n}$$ $$x_i=x_0+ih;&#xA;i=0,1,2,...,n$$"></p><p>Donde:</p><p><img src="p4_eq07307305434936686422.png" alt="$x_0:$"> Inicio del intervalo.</p><p><img src="p4_eq10743064278579394704.png" alt="$x_n:$"> Fin del intervalo.</p><p><img src="p4_eq04908367226266921901.png" alt="$h:$"> La distancia que hay de un punto a otro(paso).</p><p><img src="p4_eq04888762048991443685.png" alt="$x_i:$"> Representa los puntos.</p><p><b>Regla del Trapecio</b></p><p>Es nuestra primer regla de Newton-Cotes es definida de esta manera porque nos define el &aacute;rea de un trapecio, y en este caso lo que estamos haciendo es encontrar un polinomio de grado uno y siguiendo nuestra analogia anterior, esto quiere decir que necesitamos 2 puntos para poder tener el polinomio de grado 1.</p><p><img src="p4_eq00094740364818631071.png" alt="$$\int_{x_0}^{x_1}f(x) dx = \frac{h}{2}[f(x_0)+f(x_1)] - \frac{h^3}{12}f''(\xi);&#xA;x_0<\xi<x_1$$"></p><p><img vspace="5" hspace="5" src="imagen 05.PNG" alt=""> </p><p>Donde:</p><p><img src="p4_eq11092990650032508793.png" alt="$x_0=a$"></p><p><img src="p4_eq11207713017955869280.png" alt="$x_1=b$"></p><p><img src="p4_eq04610332200503056764.png" alt="$h=b-a$"></p><p><img src="p4_eq13122179499263184732.png" alt="$x_i=a+i(h);      i=0,1$"></p><p>En este caso la formula de aproximaci&oacute;n tiene algo que se llama el grado de precisi&oacute;n que es el grado del polinomio m&aacute;s grande, de tal manera que la integral tenga error cero, es decir en este caso para nuestra regla del trapecio nuestro grado de precisi&oacute;n es 1 debido a que si usamos esta formula para un polinomio de grado 1 nuestro error sera cero.</p><p>Ejemplo:</p><p><img vspace="5" hspace="5" src="ejemplo 1.png" alt=""> </p><p><b>Regla de Simpson (n=2).</b></p><p>Es nuestra segunda regla de Newton-Cotes y la ocupamos para interpolar 3 puntos y encontrar un polinomio de segundo grado, esa formula la llamaremos regla de Simpson, la cual es definida de la siguiente manera.</p><p><img src="p4_eq14554889325070656360.png" alt="$$\int_{x_0}^{x_2}f(x) dx =  \frac{h}{3}[f(x_0)+4f(x_1)+f(x_2)]-\frac{h^5}{90}f^{(4)}(\xi); x_{0}<\xi<x_{2}  $$"></p><p><img vspace="5" hspace="5" src="imagen 02.png" alt=""> </p><p>Donde:</p><p><img src="p4_eq11092990650032508793.png" alt="$x_0=a$"></p><p><img src="p4_eq10186220611718435754.png" alt="$x_2=b$"></p><p><img src="p4_eq09636629550107206880.png" alt="$h=\frac{b-a}{2}$"></p><p><img src="p4_eq14806968620252170259.png" alt="$x_i=a+ih; i=0,1,2$"></p><p>Para la regla de Simpson nuestro grado de precisi&oacute;n es de 3 debido a que si usamos esta formula para un polinomio de grado 3 nuestro error sera cero esto se debe a que en el error tenemos definida a la derivada cuarta.</p><p>Ejemplo:</p><p><img vspace="5" hspace="5" src="ejemplo 2.PNG" alt=""> </p><p><b>Regla de tres octavos de Simpson. (n=3)</b></p><p>Es nuestra tercer regla de Newton-Cotes y la ocupamos para hacer la interpolaci&oacute;n de un polinomio de tercer grado, por lo cual ocuparemos 4 puntos, y esta formula esta definida de la siguiente manera:</p><p><img src="p4_eq13414843282750741036.png" alt="$$\int_{x_0}^{x_3}f(x) dx=\frac{3}{8}h[f(x_0)+3f(x1)+3f(x_2)+f(x_3)]-\frac{3h^{5}}{80}f^{(4)}(\xi);   x_{0}<\xi<x_{3}$$"></p><p><img vspace="5" hspace="5" src="imagen 07.PNG" alt=""> </p><p>Para la regla de tres octavos de Simpson nuestro grado de precisi&oacute;n es de 3 debido a que si usamos esta formula para un polinomio de grado 3 nuestro error sera cero esto se debe a que en el error tenemos definida a la derivada cuarta.</p><p><img vspace="5" hspace="5" src="ejemplo 3.png" alt=""> </p><p><b>Formulas cerradas de Newton-cotes compuestas</b></p><p>Esta secci&oacute;n es una extensi&oacute;n de las reglas de Newton-Cotes, como vimos con anterioridad la regla del trapecio sin su error la hab&iacute;amos definido de la siguiente manera.</p><p><img src="p4_eq04482535238968264478.png" alt="$$\int_{x_0}^{x_1}f(x) dx = \frac{h}{2}[f(x_0)+f(x_1)]$$"></p><p><b>Regla compuesta del trapecio.</b></p><p>La idea de usar la regla compuesta del trapecio es que en lugar de usar solo un trapecio para aproximar toda un &aacute;rea, subdividamos el &aacute;rea de nuestro intervalo en subintervalos y para cada subintervalo usar un trapecio, dicha extensi&oacute;n de la regla del trapecio se define de la siguiente manera</p><p><img src="p4_eq11539036108899304041.png" alt="$$\int_{a}^{b}f(x) dx = \frac{h}{2}[f(a)+2\sum_{j=1}^{n-1}f(xj)+f(b)]-\frac{b-a}{12}h^{2}f''(u); u\in(a,b)$$"></p><p>Donde:</p><p>n= N&uacute;mero de subintervalos.</p><p>h= <img src="p4_eq15729455868275024088.png" alt="$\frac{b-a}{n}$"> (Paso)</p><p>xj= a+jh; <img src="p4_eq06588244132155468295.png" alt="$j=0,1,2,...,n$"></p><p><img vspace="5" hspace="5" src="imagen 08.PNG" alt=""> </p><p>Ejemplo:</p><p><img vspace="5" hspace="5" src="ejemplo 4.png" alt=""> </p><pre class="codeinput"><span class="comment">% *Regla compuesta de simpson*</span>
+<span class="comment">%</span>
+<span class="comment">% La regla compuesta de  Simpson al igual que la regla compuesta del trapecio es dividir toda el &aacute;rea en subintervalos y al hacer algunas</span>
+<span class="comment">% modificaciones a la formula de simpson queda de la siguiente manera:</span>
+<span class="comment">%</span>
+<span class="comment">% $$\int_{a}^{b}f(x) dx=\frac{h}{3}[f(a)+2\sum_{j=1}^{\frac{n}{2}-1}f(x_{2j})+4\sum_{j=1}^{\frac{n}{2}}f(x_{2j-1})+f(b)]-\frac{b-a}{180}h^{4}f^{4}(u)$$</span>
+<span class="comment">%</span>
+<span class="comment">% Donde:</span>
+<span class="comment">%</span>
+<span class="comment">% n=N&uacute;mero de subintervalos.(par)</span>
+<span class="comment">%</span>
+<span class="comment">% h= $\frac{b-a}{n};$ (Paso)</span>
+<span class="comment">%</span>
+<span class="comment">% xj=a+jh; $j=0,1,2,...,n$</span>
+<span class="comment">%</span>
+<span class="comment">% *Cuadratura Gaussiana*</span>
+<span class="comment">%</span>
+<span class="comment">% Lo que intenta hacer la cuadratura es aproximar una integral por la evaluaci&oacute;n en determinados puntos de una funci&oacute;n multiplicada</span>
+<span class="comment">% por determinadas constantes.</span>
+<span class="comment">%</span>
+<span class="comment">% $$\int_{a}^{b}f(x) dx = \sum_{i=1}^{n}c_{i}f(x_i)$$</span>
+<span class="comment">%</span>
+<span class="comment">% En comparaci&oacute;n con los m&eacute;todos descritos con anterioridad este m&eacute;todo en lugar de usar los polinomios de lagrange utiliza los</span>
+<span class="comment">% polinomios de legendre, alguno de estos polinomios son:</span>
+<span class="comment">%</span>
+<span class="comment">% $${ 1,x,x^{2}-\frac{x^3}{3},x^{3}-\frac{3x}{5},x^{4}-\frac{6x^2}{7},...}$$</span>
+<span class="comment">%</span>
+<span class="comment">% * $p_n$-Polinomios de legendre de grado n.</span>
+<span class="comment">% * $x_1,x_2,...,x_n$-Ra&iacute;ces de $p_n(x)$</span>
+<span class="comment">% * $C_i=\int_{-1}^{1} \prod_{j=1}^{n}\frac{x-x_j}{x_j-x_i}dx$ entonces $\int_{-1}^{1}p(x) dx = \sum_{i=1}^nC_{i}p(x_i)$</span>
+<span class="comment">%</span>
+<span class="comment">% Con anterioridad hab&iacute;amos hablado del grado de exactitud que tiene un m&eacute;todo, en este caso entre mayor sea el valor de n (l&iacute;mite</span>
+<span class="comment">% superior de nuestra sumatoria) mayor sera nuestra precisi&oacute;n.\\Por otro lado tambi&eacute;n se pueden utilizar tablas para saber cuales son</span>
+<span class="comment">% las raices y los $C_i$</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">% &lt;&lt;imagen 09.PNG&gt;&gt;</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+</pre><h2 id="4">Desarrollo</h2><h2 id="5">Problema 1</h2><pre class="codeinput">x= @(t) exp(-t).*(0&lt;=t &amp; t&lt;=1);
+y= @(t) t.*(-1&lt;=t &amp; t&lt;=1);
+convuno(x,y)
+</pre><img vspace="5" hspace="5" src="p4_01.png" alt=""> <p><img vspace="5" hspace="5" src="imagen 1.PNG" alt=""> </p><h2 id="7">Problema 2</h2><pre class="codeinput">x= @(t) 1.*(0&lt;=t &amp; t&lt;=3)-(1).*(3&lt;t &amp; t&lt;=4);
+y= @(t) 1.*(0&lt;=-t &amp; -t&lt;=3)-(1).*(3&lt;-t &amp; -t&lt;=4);
+convdos(x,y)
+</pre><img vspace="5" hspace="5" src="p4_02.png" alt=""> <p><img vspace="5" hspace="5" src="imagen 2.png" alt=""> </p><h2 id="9">Problema 3</h2><pre class="codeinput">n=-4:4;
+a=[0 0 4 2 0 2 4 0 0];
+b=[0 -9 -6 -3 0 3 6 9 0];
+convdisc([n;a],[n;b])
+</pre><img vspace="5" hspace="5" src="p4_03.png" alt=""> <p><img vspace="5" hspace="5" src="imagen 3.png" alt=""> </p><h2 id="11">Problema 4.</h2><p>En este inciso nos pide la correlacion de c con d pero como d es  par al momento de invertir 2 veces una por la operaci&oacute;n de correlacaion y otra por la operaci&oacute;n de la convoluci&oacute;n, entonces dicho lo anteior la correlaci&oacute;n de c con d nos queda igual que el inciso anterior.</p><pre class="codeinput">n=-4:4;
+a=[0 0 4 2 0 2 4 0 0];
+b=[0 -9 -6 -3 0 3 6 9 0];
+convdisc([n;a],[n;b])
+</pre><img vspace="5" hspace="5" src="p4_04.png" alt=""> <p><img vspace="5" hspace="5" src="imagen 3.png" alt=""> </p><h2 id="13">Problema 5</h2><pre class="codeinput">conv(a,b)
+</pre><pre class="codeoutput">
+ans =
+
+  Columns 1 through 13
+
+     0     0     0   -36   -42   -24   -24   -36     0    36    24    24    42
+
+  Columns 14 through 17
+
+    36     0     0     0
+
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Practica 4. Convolución y correlación de señales.
+% 
+% Autor. Alvarado Angeles Francisxo Javier
+%
+% Grupo. 2MV1
+%% Objetivos.
+% 
+% * Conocer métodos básicos de integración numérica.
+% * Manipulación de instrucciones en MATLAB. 
+% * Simular convoluciones y correlaciones de señales continuas. 
+% * Simular convoluciones y correlaciones de señales discretas. 
+
+%% Introducción.
+% *Formulas cerrada de Newton-Cotes* 
+%
+% Las  formulas  cerradas  de  Newton-Cotes nos dicen que si tú tienes una función $f(x)$ que es derivable un número determinado 
+% de veces, y la derivada es continua, entonces en lugar de hacer la integral de $f(x)$ tú puedes aplicar la integral a la expresión del lado
+% derecho la cual es un polinomio más la suma de un error la cual sera una aproximación (ya que tiene un cierto error) de la integral de 
+% tu función original $f(x)$
+%
+% $$f(x)=p(x)+\frac{f^{n+1}\xi(\omega)}{(n+1)!}(x-x_0)(x-x_1)...(x-x_n)$$
+% 
+% 
+% <<imagen 01.png>>
+% 
+% Estas formulas de Newton-Cotes se llaman formula cerrada de $(n+ 1)$ puntos donde n representa el grado del polinomio que se quiere usar para
+% hacer la aproximación, además de que también representa la cantidad de puntos que se necesitan para tener el grado de dicho polinomio.
+% 
+% $$x_0=a$$ $$x_n=b.$$ $$h=\frac{b-a}{n}$$ $$x_i=x_0+ih;
+% i=0,1,2,...,n$$
+%
+% Donde:
+%
+% $x_0:$ Inicio del intervalo.
+%
+% $x_n:$ Fin del intervalo.
+%
+% $h:$ La distancia que hay de un punto a otro(paso).
+%
+% $x_i:$ Representa los puntos.
+%
+% *Regla del Trapecio*
+%
+% Es nuestra primer regla de Newton-Cotes es definida de esta manera porque nos define el área de un trapecio, y en este caso lo que estamos 
+% haciendo es encontrar un polinomio de grado uno y siguiendo nuestra analogia anterior, esto quiere decir que necesitamos 2 puntos para 
+% poder tener el polinomio de grado 1.
+%
+% $$\int_{x_0}^{x_1}f(x) dx = \frac{h}{2}[f(x_0)+f(x_1)] - \frac{h^3}{12}f''(\xi);
+% x_0<\xi<x_1$$
+%
+%
+% 
+% <<imagen 05.PNG>>
+% 
+% Donde:
+%
+% $x_0=a$
+%
+% $x_1=b$
+%
+% $h=b-a$
+%
+% $x_i=a+i(h);      i=0,1$
+%
+% En este caso la formula de aproximación tiene algo que se llama el grado de precisión que es el grado del polinomio más grande, de tal manera 
+% que la integral tenga error cero, es decir en este caso para nuestra regla del trapecio nuestro grado de precisión es 1 debido a que si usamos
+% esta formula para un polinomio de grado 1 nuestro error sera cero.
+% 
+% Ejemplo: 
+% 
+% 
+% 
+% <<ejemplo 1.png>>
+% 
+%
+% *Regla de Simpson (n=2).*
+%
+% Es nuestra segunda regla de Newton-Cotes y la ocupamos para interpolar 3 puntos y encontrar un polinomio de segundo grado, esa formula
+% la llamaremos regla de Simpson, la cual es definida de la siguiente
+% manera.
+%
+% $$\int_{x_0}^{x_2}f(x) dx =  \frac{h}{3}[f(x_0)+4f(x_1)+f(x_2)]-\frac{h^5}{90}f^{(4)}(\xi); x_{0}<\xi<x_{2}  $$
+%
+% 
+% <<imagen 02.png>>
+% 
+% Donde:
+%
+% $x_0=a$
+%
+% $x_2=b$
+%
+% $h=\frac{b-a}{2}$
+% 
+% $x_i=a+ih; i=0,1,2$
+% 
+% Para la regla de Simpson nuestro grado de precisión es de 3 debido a que si usamos esta formula para un polinomio de grado 3 nuestro
+% error sera cero esto se debe a que en el error tenemos definida a la derivada cuarta.
+%
+% Ejemplo:
+% 
+% 
+% <<ejemplo 2.PNG>>
+% 
+%
+% *Regla de tres octavos de Simpson. (n=3)*
+%
+% Es nuestra tercer regla de Newton-Cotes y la ocupamos para hacer la interpolación de un polinomio de tercer grado, por lo cual
+% ocuparemos 4 puntos, y esta formula esta definida de la siguiente manera:
+%
+% $$\int_{x_0}^{x_3}f(x) dx=\frac{3}{8}h[f(x_0)+3f(x1)+3f(x_2)+f(x_3)]-\frac{3h^{5}}{80}f^{(4)}(\xi);   x_{0}<\xi<x_{3}$$
+% 
+% 
+% <<imagen 07.PNG>>
+% 
+% Para la regla de tres octavos de Simpson nuestro grado de precisión es de 3 debido a que si usamos esta formula para un polinomio de 
+% grado 3 nuestro error sera cero esto se debe a que en el error tenemos definida a la derivada cuarta.
+%
+% 
+% <<ejemplo 3.png>>
+% 
+% *Formulas cerradas de Newton-cotes compuestas*
+%
+% Esta sección es una extensión de las reglas de Newton-Cotes, como vimos con anterioridad la regla del trapecio sin su error la habíamos
+% definido de la siguiente manera.
+% 
+% $$\int_{x_0}^{x_1}f(x) dx = \frac{h}{2}[f(x_0)+f(x_1)]$$  
+%
+% *Regla compuesta del trapecio.*
+% 
+% La idea de usar la regla compuesta del trapecio es que en lugar de usar solo un trapecio para aproximar toda un área, subdividamos
+% el área de nuestro intervalo en subintervalos y para cada subintervalo usar un trapecio, dicha extensión de la regla del trapecio se 
+% define de la siguiente manera   
+%
+% $$\int_{a}^{b}f(x) dx = \frac{h}{2}[f(a)+2\sum_{j=1}^{n-1}f(xj)+f(b)]-\frac{b-a}{12}h^{2}f''(u); u\in(a,b)$$
+%
+% Donde:
+%
+% n= Número de subintervalos.
+%
+% h= $\frac{b-a}{n}$ (Paso)
+% 
+% xj= a+jh; $j=0,1,2,...,n$
+%
+% 
+% 
+% <<imagen 08.PNG>>
+%
+% Ejemplo:
+%%
+% 
+% <<ejemplo 4.png>>
+% 
+
+% *Regla compuesta de simpson*
+%
+% La regla compuesta de  Simpson al igual que la regla compuesta del trapecio es dividir toda el área en subintervalos y al hacer algunas
+% modificaciones a la formula de simpson queda de la siguiente manera:
+%
+% $$\int_{a}^{b}f(x) dx=\frac{h}{3}[f(a)+2\sum_{j=1}^{\frac{n}{2}-1}f(x_{2j})+4\sum_{j=1}^{\frac{n}{2}}f(x_{2j-1})+f(b)]-\frac{b-a}{180}h^{4}f^{4}(u)$$
+%
+% Donde:
+%
+% n=Número de subintervalos.(par)
+% 
+% h= $\frac{b-a}{n};$ (Paso)
+% 
+% xj=a+jh; $j=0,1,2,...,n$
+%
+% *Cuadratura Gaussiana*
+% 
+% Lo que intenta hacer la cuadratura es aproximar una integral por la evaluación en determinados puntos de una función multiplicada
+% por determinadas constantes.
+%
+% $$\int_{a}^{b}f(x) dx = \sum_{i=1}^{n}c_{i}f(x_i)$$
+%
+% En comparación con los métodos descritos con anterioridad este método en lugar de usar los polinomios de lagrange utiliza los
+% polinomios de legendre, alguno de estos polinomios son:
+%
+% $${ 1,x,x^{2}-\frac{x^3}{3},x^{3}-\frac{3x}{5},x^{4}-\frac{6x^2}{7},...}$$  
+% 
+% * $p_n$-Polinomios de legendre de grado n.
+% * $x_1,x_2,...,x_n$-Raíces de $p_n(x)$
+% * $C_i=\int_{-1}^{1} \prod_{j=1}^{n}\frac{x-x_j}{x_j-x_i}dx$ entonces $\int_{-1}^{1}p(x) dx = \sum_{i=1}^nC_{i}p(x_i)$
+% 
+% Con anterioridad habíamos hablado del grado de exactitud que tiene un método, en este caso entre mayor sea el valor de n (límite
+% superior de nuestra sumatoria) mayor sera nuestra precisión.\\Por otro lado también se pueden utilizar tablas para saber cuales son
+% las raices y los $C_i$
+%
+% 
+% 
+% <<imagen 09.PNG>>
+% 
+%
+%% Desarrollo
+%% Problema 1
+x= @(t) exp(-t).*(0<=t & t<=1);
+y= @(t) t.*(-1<=t & t<=1);
+convuno(x,y)
+%%
+% 
+% <<imagen 1.PNG>>
+% 
+%% Problema 2
+x= @(t) 1.*(0<=t & t<=3)-(1).*(3<t & t<=4);
+y= @(t) 1.*(0<=-t & -t<=3)-(1).*(3<-t & -t<=4);
+convdos(x,y)
+
+%%
+% 
+% <<imagen 2.png>>
+% 
+%% Problema 3
+n=-4:4;
+a=[0 0 4 2 0 2 4 0 0];
+b=[0 -9 -6 -3 0 3 6 9 0];
+convdisc([n;a],[n;b])
+%%
+% 
+% <<imagen 3.png>>
+% 
+%% Problema 4.
+% En este inciso nos pide la correlacion de c con d pero como d es  par al
+% momento de invertir 2 veces una por la operación de correlacaion y otra
+% por la operación de la convolución, entonces dicho lo anteior la
+% correlación de c con d nos queda igual que el inciso anterior.
+n=-4:4;
+a=[0 0 4 2 0 2 4 0 0];
+b=[0 -9 -6 -3 0 3 6 9 0];
+convdisc([n;a],[n;b])
+%%
+% 
+% <<imagen 3.png>>
+% 
+%% Problema 5
+conv(a,b)
+##### SOURCE END #####
+--></body></html>
